@@ -1611,22 +1611,17 @@ static NSDictionary *YTKACEStreamingOptionsDefinition(void) {
             YTKACEToggle(@"Local Queue", @"YTKACE.Preference.Playback.LocalQueue", @"", @"")
         ],
         @[
-            YTKACEPicker(@"Home Shorts Shelf Test",
+            YTKACEPicker(@"Home Shorts Shelf Trace Test",
                          @"YTKACE.Preference.Playback.ShortsShelfTestMode",
-                         @[@"Observe / Stock",
-                           @"Force Restart Threshold 5s",
-                           @"Force Restart Threshold 60s",
-                           @"Disable Resume From Current Time",
-                           @"Enable Resume From Current Time",
-                           @"Force Max Playback Length 5s",
-                           @"Force Max Playback Length 60s",
-                           @"Ignore Early-Finished Callback",
-                           @"Ignore Finished Callback",
-                           @"Block Reset Start Times",
-                           @"Bypass YTKACE Playback Fix"],
-                         @[@0, @1, @2, @3, @4, @5, @6, @7, @8, @9, @10],
+                         @[@"Trace Only / Stock Behavior",
+                           @"Block Repeated startPlayback for 5s",
+                           @"Block Repeated startPlayback for 60s",
+                           @"Block Duplicate PlayerResponse for 5s",
+                           @"Block Duplicate ActiveVideo for 5s",
+                           @"Block Duplicate Response + ActiveVideo for 5s"],
+                         @[@0, @1, @2, @3, @4, @5],
                          0,
-                         @"Tests the actual Home-feed Shorts shelf/grid inline-muted playback path.",
+                         @"Targets the repeating shelf reconfiguration seen in the previous debug build.",
                          @""),
             YTKACEToggle(@"Show Shelf Debug Overlay",
                          @"YTKACE.Preference.Playback.ShortsShelfDebugOverlay",
@@ -1651,7 +1646,7 @@ static NSDictionary *YTKACEStreamingOptionsDefinition(void) {
                                @"Copy or share a video's captions from the player.",
                                @"YTKACE.Preference.Playback.Transcript")
         ]
-    ], @[YTKACELocalized(@"QUALITY"), YTKACELocalized(@"DOUBLE TAP"), YTKACELocalized(@"AUTOPLAY & DATA"), YTKACELocalized(@"QUEUE"), YTKACELocalized(@"INLINE SHORTS TEST"), YTKACELocalized(@"SUBTITLES"), YTKACELocalized(@"TRANSCRIPT")]);
+    ], @[YTKACELocalized(@"QUALITY"), YTKACELocalized(@"DOUBLE TAP"), YTKACELocalized(@"AUTOPLAY & DATA"), YTKACELocalized(@"QUEUE"), YTKACELocalized(@"HOME SHORTS TRACE"), YTKACELocalized(@"SUBTITLES"), YTKACELocalized(@"TRANSCRIPT")]);
 }
 
 static NSDictionary *YTKACENavigationOptionsDefinition(void) {
