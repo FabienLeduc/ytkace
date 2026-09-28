@@ -378,6 +378,10 @@ static void YTKACEDidActivateVideo(id receiver,
         );
     }
 
+    if (YTKACEPlayerIsInlinePreview(receiver)) {
+        return;
+    }
+
     YTKACEOpenPausedVideoActivated(receiver);
     YTKACELastPlayerController = receiver;
 
@@ -440,6 +444,8 @@ static void YTKACESingleVideoTimeChanged(id receiver,
             receiver, selector, video, time
         );
     }
+    if (YTKACEPlayerIsInlinePreview(receiver)) return;
+
     double current = YTKACEDoubleMessage(receiver, @[@"currentVideoMediaTime"]);
     double resolved = current > 0.0 ? current : time;
     if (YTKACESponsorTimeUpdatesEnabled) {
@@ -457,6 +463,8 @@ static void YTKACEMutatedVideoTimeChanged(id receiver,
             receiver, selector, video, time
         );
     }
+    if (YTKACEPlayerIsInlinePreview(receiver)) return;
+
     double current = YTKACEDoubleMessage(receiver, @[@"currentVideoMediaTime"]);
     double resolved = current > 0.0 ? current : time;
     if (YTKACESponsorTimeUpdatesEnabled) {

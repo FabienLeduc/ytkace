@@ -534,6 +534,8 @@ static id YTKACEShortsParent(id receiver) {
 }
 
 static id YTKACEFindShortsController(id receiver) {
+    if (YTKACEPlayerIsInlinePreview(receiver)) return nil;
+
     id current = receiver;
     for (NSInteger index = 0; current != nil && index < 10; index++) {
         NSString *name = NSStringFromClass([current class]).lowercaseString;

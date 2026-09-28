@@ -285,6 +285,10 @@ static UIImage *YTKACESpeedButtonImage(BOOL plus) {
 }
 
 - (BOOL)primeStartRateForSource:(id)source {
+    // Never force watch/Shorts playback-rate preferences onto feed previews.
+    // Doing so can reset YouTube's short inline preview cycle.
+    if (YTKACEPlayerIsInlinePreview(source)) return NO;
+
     NSString *identifier = [self identifierForSource:source];
     if (identifier.length == 0) return NO;
     if ([self.primedVideo isEqualToString:identifier]) return NO;
@@ -316,6 +320,8 @@ static UIImage *YTKACESpeedButtonImage(BOOL plus) {
 }
 
 - (void)playbackTimeChanged:(NSNotification *)notification {
+    if (YTKACEPlayerIsInlinePreview(notification.object)) return;
+
     self.rateSource = notification.object;
     if ([self primeStartRateForSource:notification.object]) {
         return;

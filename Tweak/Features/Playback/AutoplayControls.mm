@@ -41,6 +41,8 @@ static void YTKACEPauseNow(id player) {
 }
 
 void YTKACEOpenPausedVideoActivated(id player) {
+    if (YTKACEPlayerIsInlinePreview(player)) return;
+
     YTKACEApplyPreferredCaptionLanguage(player);
     if (!YTKACEFeatureEnabled(YTKACEOpenPausedKey)) return;
     NSString *videoID = nil;

@@ -144,11 +144,59 @@ static void YTKACEApplyPreferredQuality(id controller) {
     }
 }
 
+static BOOL YTKACEObjectReportsLivePreview(id object) {
+    if (object == nil) return NO;
+    // Prefer a native live-preview signal when this YouTube build exposes one.
+    // The class/overlay checks below remain the fallback for builds that do not.
+    SEL selector = NSSelectorFromString(@"isLivePreviewVideo");
+    if ([object respondsToSelector:selector]) {
+        return ((BOOL (*)(id, SEL))objc_msgSend)(object, selector);
+    }
+    return NO;
+}
+
+BOOL YTKACEPlayerIsInlinePreview(id player) {
+    if (player == nil) return NO;
+    if (YTKACEObjectReportsLivePreview(player)) return YES;
+
+    // Feed autoplay/hover previews use YouTube's inline-muted overlay.  Shorts
+    // shelves also carry "Reel"/"Shorts" in their class names, so they must
+    // be rejected before the generic Shorts detector below.
+    SEL overlaySelector = NSSelectorFromString(@"activeVideoPlayerOverlay");
+    if ([player respondsToSelector:overlaySelector]) {
+        id overlay = ((id (*)(id, SEL))objc_msgSend)(player, overlaySelector);
+        if (YTKACEObjectReportsLivePreview(overlay)) return YES;
+        NSString *overlayName = NSStringFromClass([overlay class]);
+        if ([overlayName containsString:@"InlineMutedPlayback"]) {
+            return YES;
+        }
+    }
+
+    SEL parentSelector = NSSelectorFromString(@"parentViewController");
+    id current = player;
+    for (NSUInteger depth = 0; current != nil && depth < 8; depth++) {
+        if (YTKACEObjectReportsLivePreview(current)) return YES;
+        NSString *name = NSStringFromClass([current class]);
+        if ([name containsString:@"InlineMutedPlayback"] ||
+            [name containsString:@"ReelShelf"] ||
+            [name containsString:@"ShortsShelf"]) {
+            return YES;
+        }
+        if (![current respondsToSelector:parentSelector]) break;
+        id parent = ((id (*)(id, SEL))objc_msgSend)(current, parentSelector);
+        if (parent == current) break;
+        current = parent;
+    }
+    return NO;
+}
+
 BOOL YTKACEPlayerIsShorts(id player) {
+    if (YTKACEPlayerIsInlinePreview(player)) return NO;
+
     SEL parentSelector = NSSelectorFromString(@"parentViewController");
     id current = player;
     for (NSUInteger depth = 0; current != nil && depth < 6; depth++) {
-        NSString *name = NSStringFromClass(object_getClass(current));
+        NSString *name = NSStringFromClass([current class]);
         if ([name containsString:@"Reel"] || [name containsString:@"Shorts"]) {
             return YES;
         }
