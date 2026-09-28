@@ -1611,6 +1611,21 @@ static NSDictionary *YTKACEStreamingOptionsDefinition(void) {
             YTKACEToggle(@"Local Queue", @"YTKACE.Preference.Playback.LocalQueue", @"", @"")
         ],
         @[
+            YTKACEPicker(@"Inline Shorts Preview Test",
+                         @"YTKACE.Preference.Playback.InlineShortsTestMode",
+                         @[@"Observe / Normal", @"Block Loop Callback", @"Suppress Loops Before 5s",
+                           @"Full-Duration Suppression", @"Force Native SinglePlay", @"Force Native Repeat",
+                           @"Disable Native Looping"],
+                         @[@0, @1, @2, @3, @4, @5, @6],
+                         0,
+                         @"Experimental controls for Home-feed Shorts previews.",
+                         @""),
+            YTKACEToggle(@"Show Diagnostic Overlay",
+                         @"YTKACE.Preference.Playback.InlineShortsDiagnosticOverlay",
+                         @"Show live inline-Shorts playback diagnostics on screen.",
+                         @"")
+        ],
+        @[
             YTKACEPicker(@"Subtitle Language",
                          @"YTKACE.Preference.Playback.CaptionLanguage",
                          @[@"Off", @"English", @"Spanish", @"Portuguese",
@@ -1628,7 +1643,7 @@ static NSDictionary *YTKACEStreamingOptionsDefinition(void) {
                                @"Copy or share a video's captions from the player.",
                                @"YTKACE.Preference.Playback.Transcript")
         ]
-    ], @[YTKACELocalized(@"QUALITY"), YTKACELocalized(@"DOUBLE TAP"), YTKACELocalized(@"AUTOPLAY & DATA"), YTKACELocalized(@"QUEUE"), YTKACELocalized(@"SUBTITLES"), YTKACELocalized(@"TRANSCRIPT")]);
+    ], @[YTKACELocalized(@"QUALITY"), YTKACELocalized(@"DOUBLE TAP"), YTKACELocalized(@"AUTOPLAY & DATA"), YTKACELocalized(@"QUEUE"), YTKACELocalized(@"INLINE SHORTS TEST"), YTKACELocalized(@"SUBTITLES"), YTKACELocalized(@"TRANSCRIPT")]);
 }
 
 static NSDictionary *YTKACENavigationOptionsDefinition(void) {
