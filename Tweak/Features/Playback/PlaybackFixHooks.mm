@@ -49,7 +49,8 @@ static IMP OriginalSeekToTime;
 static IMP OriginalHandleError;
 
 static BOOL YTKACEPlaybackFixEnabled(void) {
-    return YTKACEFeatureEnabled(YTKACEPlaybackFixKey);
+    return YTKACEFeatureEnabled(YTKACEPlaybackFixKey) &&
+        !YTKACEShortsShelfBypassPlaybackFix();
 }
 
 static id YTKACEParentResponder(id overlay) {
